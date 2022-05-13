@@ -17,6 +17,7 @@ router.post(
   ],
   async (req, res) => {
     try {
+      req;
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(400).json({
@@ -36,9 +37,9 @@ router.post(
       const hashedPassword = await bycript.hash(password, 12);
       const user = new User({ email, password: hashedPassword });
       user.save();
-      res.json(201).json("Пользователь создан");
+      res.status(201).json({ message: "Пользователь создан" });
     } catch (error) {
-      res.status(500).json({ message: "Что-то пошло не так..." });
+      // res.status(500).json({ message: "Что-то пошло не так..." });
     }
   }
 );

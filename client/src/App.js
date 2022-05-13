@@ -1,12 +1,30 @@
 import React from "react";
 import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { useRoutes } from "./routes";
+import { BrowserRouter } from "react-router-dom";
+import { useAuth } from "./hooks/auth.hook";
+import { AuthContext } from "./context/AuthContext";
+import Navbar from "./components/Navbar";
 
 function App() {
+  const { login, logout, token, userId } = useAuth();
+  const isAuthenticated = !!token;
+  const routes = useRoutes(isAuthenticated);
   return (
-    <div className="container">
-      <h1>Hello</h1>
-    </div>
+    <AuthContext.Provider
+      value={{
+        token,
+        userId,
+        login,
+        logout,
+        isAuthenticated,
+      }}
+    >
+      <BrowserRouter>
+        {isAuthenticated && <Navbar />}
+        {routes}
+      </BrowserRouter>
+    </AuthContext.Provider>
   );
 }
 
